@@ -1,9 +1,11 @@
 #pragma once
 
+#include <QObject>
+
 class BallModel;
 class BallWindow;
 
-class BallController {
+class BallController : public QObject {
 public:
     BallController(BallModel* model, BallWindow* view);
 
@@ -18,4 +20,7 @@ private:
 
     BallModel* model;
     BallWindow* view;
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 };

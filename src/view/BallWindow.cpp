@@ -1,8 +1,5 @@
 #include "view/BallWindow.h"
 
-#include "controller/BallController.h"
-
-#include <QKeyEvent>
 #include <QLabel>
 #include <QPainter>
 #include <QVBoxLayout>
@@ -70,37 +67,4 @@ BallWindow::BallWindow() {
 
 void BallWindow::setBallPosition(int row, int column) {
     grid->setBallPosition(row, column);
-}
-
-void BallWindow::setController(BallController* newController) {
-    controller = newController;
-}
-
-void BallWindow::keyPressEvent(QKeyEvent* event) {
-    if (controller == nullptr) {
-        return;
-    }
-
-    // The view notices the key press, then asks the controller what to do.
-    if (event->key() == Qt::Key_Up) {
-        controller->moveUp();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Down) {
-        controller->moveDown();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Left) {
-        controller->moveLeft();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Right) {
-        controller->moveRight();
-        return;
-    }
-
-    QWidget::keyPressEvent(event);
 }
