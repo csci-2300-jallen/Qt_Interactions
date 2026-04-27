@@ -8,46 +8,46 @@
 #include <QVBoxLayout>
 
 class BallGridWidget : public QWidget {
-public:
-    BallGridWidget(QWidget* parent = nullptr) : QWidget(parent) {
-        setMinimumSize(250, 250);
-    }
-
-    void setBallPosition(int newRow, int newColumn) {
-        row = newRow;
-        column = newColumn;
-        update();
-    }
-
-protected:
-    void paintEvent(QPaintEvent*) override {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
-
-        const int gridSize = 5;
-        const int cellWidth = width() / gridSize;
-        const int cellHeight = height() / gridSize;
-
-        // Draw the grid lines.
-        painter.setPen(Qt::gray);
-        for (int i = 0; i <= gridSize; i++) {
-            painter.drawLine(i * cellWidth, 0, i * cellWidth, gridSize * cellHeight);
-            painter.drawLine(0, i * cellHeight, gridSize * cellWidth, i * cellHeight);
+    public:
+        BallGridWidget(QWidget* parent = nullptr) : QWidget(parent) {
+            setMinimumSize(250, 250);
         }
 
-        // Draw the ball in the current row and column.
-        const int diameter = qMin(cellWidth, cellHeight) - 12;
-        const int x = column * cellWidth + (cellWidth - diameter) / 2;
-        const int y = row * cellHeight + (cellHeight - diameter) / 2;
+        void setBallPosition(int newRow, int newColumn) {
+            row = newRow;
+            column = newColumn;
+            update();
+        }
 
-        painter.setBrush(Qt::blue);
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(x, y, diameter, diameter);
-    }
+    protected:
+        void paintEvent(QPaintEvent*) override {
+            QPainter painter(this);
+            painter.setRenderHint(QPainter::Antialiasing);
 
-private:
-    int row = 2;
-    int column = 2;
+            const int gridSize = 5;
+            const int cellWidth = width() / gridSize;
+            const int cellHeight = height() / gridSize;
+
+            // Draw the grid lines.
+            painter.setPen(Qt::gray);
+            for (int i = 0; i <= gridSize; i++) {
+                painter.drawLine(i * cellWidth, 0, i * cellWidth, gridSize * cellHeight);
+                painter.drawLine(0, i * cellHeight, gridSize * cellWidth, i * cellHeight);
+            }
+
+            // Draw the ball in the current row and column.
+            const int diameter = qMin(cellWidth, cellHeight) - 12;
+            const int x = column * cellWidth + (cellWidth - diameter) / 2;
+            const int y = row * cellHeight + (cellHeight - diameter) / 2;
+
+            painter.setBrush(Qt::blue);
+            painter.setPen(Qt::NoPen);
+            painter.drawEllipse(x, y, diameter, diameter);
+        }
+
+    private:
+        int row = 2;
+        int column = 2;
 };
 
 BallWindow::BallWindow() {
@@ -77,28 +77,7 @@ void BallWindow::setController(BallController* newController) {
 }
 
 void BallWindow::keyPressEvent(QKeyEvent* event) {
-    if (controller == nullptr) {
-        return;
-    }
-
-    // The view notices the key press, then asks the controller what to do.
-    if (event->key() == Qt::Key_Up) {
-        controller->moveUp();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Down) {
-        controller->moveDown();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Left) {
-        controller->moveLeft();
-        return;
-    }
-
-    if (event->key() == Qt::Key_Right) {
-        controller->moveRight();
+    if (controller != nullptr && controller->handleKeyPress(event)) {
         return;
     }
 

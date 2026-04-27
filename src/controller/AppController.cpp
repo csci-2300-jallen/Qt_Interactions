@@ -50,13 +50,16 @@ void AppController::openBallWindow() {
     ballController = new BallController(ballModel, ballWindow);
     ballController->initialize();
 
-    QObject::connect(ballWindow, &QObject::destroyed, [this]() {
-        delete ballController;
-        delete ballModel;
-        ballController = nullptr;
-        ballModel = nullptr;
-        ballWindow = nullptr;
-    });
+    QObject::connect(
+        ballWindow,
+        &QObject::destroyed,
+        [this]() {
+            delete ballController;
+            delete ballModel;
+            ballController = nullptr;
+            ballModel = nullptr;
+            ballWindow = nullptr;
+        });
 
     ballWindow->show();
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+class QKeyEvent;
+
 class BallModel;
 class BallWindow;
 
@@ -12,6 +14,7 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
+    bool handleKeyPress(QKeyEvent* event);
 
 private:
     void refreshView();
